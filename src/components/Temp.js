@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/temp.css';
 
 const Temp = () => {
-  const apiKey = 'c4f7c361b4ffeb6063b46b5b465ce4d6';
+  const apiKey = process.env.APIKEY;
   const [city, setCity] = useState(null);
   const [search, setSearch] = useState('');
   // eslint-disable-next-line

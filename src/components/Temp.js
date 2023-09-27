@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/temp.css';
 
 const Temp = () => {
-  const apiKey = "c4f7c361b4ffeb6063b46b5b465ce4d6";
+  const apiKey = {/* YOUR OPEN WEATHER API HERE */};
   const [city, setCity] = useState(null);
   const [search, setSearch] = useState('');
   // eslint-disable-next-line
@@ -75,18 +75,55 @@ const Temp = () => {
     getUserLocationAndFetchWeather();
   }, []);
 
+  const [formattedDate, setFormattedDate] = useState('');
+
+  useEffect(() => {
+    // Function to format the current date as "dd-mm-yyyy"
+    const formatCurrentDate = () => {
+      const currentDate = new Date();
+      const day = currentDate.getDate().toString().padStart(2, '0');
+      const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const monthIndex = currentDate.getMonth();
+      const month = months[monthIndex]; // Months are zero-based, so add 1
+      const year = currentDate.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
+    // Set the initial date
+    setFormattedDate(formatCurrentDate());
+
+    // Update the date every second
+    const intervalId = setInterval(() => {
+      setFormattedDate(formatCurrentDate());
+    }, 1000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <>
       <div className="container">
         <div className="search">
-          <input type="search" value={search} onChange={handleChange} placeholder="Search for a city..." />
-          <i style={{ cursor: "pointer" }} className="fa-solid fa-magnifying-glass" onClick={handleSearch}></i>
+          <input type="search" value={search} onKeyDown={handleKeyPress} onChange={handleChange} placeholder="Search for a city..." />
+          <i style={{ cursor: "pointer" }} className="fa-solid fa-magnifying-glass"
+           onClick={handleSearch}
+           ></i>
         </div>
         {city ? (
           <>
             <div className="loc-date">
               <p className='city'>{city.name}</p>
-              <p className='date'>Sunday 20, November 2023</p>
+              <p className='date'>{formattedDate}</p>
             </div>
 
             <h1 className='temp'>{Math.round(city.main.temp - 273.15)}<sup>o</sup>c</h1>

@@ -1,0 +1,37 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #ffff;
+}
+.container{
+    position: relative;
+    margin-top: 6%;
+    text-align: center;
+}
+.search input{
+    outline: none;
+    overflow: hidden;
+    width: 220px;
+    height: 32px;
+    margin-bottom: 2rem;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid lightgrey;
+    background-color: transparent;
+    font-size: 20px;
+    text-align: center;
+}
+
+.city{
+    font-size: 45px;
+    font-weight: 380;
+}
+.date{
+    font-size: 22px;
+}
+.temp{
+    font-size: 5rem;
+    font-weight: 500;
+}

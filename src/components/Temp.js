@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import '../css/temp.css';
 
 const Temp = () => {
-  const apiKey = {/* YOUR OPEN WEATHER API HERE */};
+  const apiKey = "YOUR_API_KEY";
   const [city, setCity] = useState(null);
   const [search, setSearch] = useState('');
   // eslint-disable-next-line
-  const [defaultCity, setDefaultCity] = useState('Lahore');
 
   // Function to fetch latitude and longitude for the given city (without country code)
   const fetchCityCoordinates = async (cityName) => {
     try {
-      const geocodingUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+      const geocodingUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName?cityName:"lahore"}&appid=${apiKey}`;
       const response = await fetch(geocodingUrl);
       const { coord } = await response.json();
       return coord; // Returns an object with 'lat' and 'lon'
@@ -35,19 +34,20 @@ const Temp = () => {
   };
 
   const handleSearch = () => {
-    if (search) {
-      fetchCityCoordinates(search.trim()) // Remove leading/trailing spaces
-        .then(({ lat, lon }) => {
-          fetchWeatherData(lat, lon);
-        })
-        .catch((error) => {
-          console.error('Error fetching city coordinates', error);
-          setCity(null);
-        });
-    } else {
-      getUserLocationAndFetchWeather();
-    }
-  };
+  if (search.trim() !== '') {
+    fetchCityCoordinates(search.trim())
+      .then(({ lat, lon }) => {
+        fetchWeatherData(lat, lon);
+      })
+      .catch((error) => {
+        console.error('Error fetching city coordinates', error);
+        setCity(null);
+      });
+  } else {
+    getUserLocationAndFetchWeather(); // Call this function when the search bar is empty
+  }
+};
+
 
   const handleChange = (e) => {
     setSearch(e.target.value);
